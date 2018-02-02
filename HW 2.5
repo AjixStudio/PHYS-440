@@ -1,0 +1,39 @@
+import Glibc
+import Foundation
+
+
+//let xmax = 40.0, xmin = 0.25, step = 0.1, order = 10, start = 50
+
+func factorial(_ n: Double) -> Double {
+  if n == 1.0 {
+    return 1.0
+  } else {
+    return n * factorial(n - 1)
+  }
+}
+
+//Down Recursion
+func sinFunc(_ x: Double, _ n: Int) -> Double {
+	
+	let w = x * .pi / 180
+	var newSin = Double()
+	
+	for z in 1...n {
+		newSin += pow(Double(-1),Double(z-1)) * pow(w,Double(2*z-1)) / factorial(Double(2*z-1))
+	}
+	
+	return newSin
+}
+
+//Main Data
+let bigN = 10
+for i in 1...bigN {
+	let newsinFunc = sinFunc(45.0,i), newsine = sin(45.0 * .pi / 180), error = abs(newsinFunc - newsine) / abs(newsine)
+	print(" \(i)  ||  \(newsinFunc) || \(newsine) ||  \(error)")
+}
+
+let hugeN = 100
+for i in bigN...hugeN {
+	let newsinFunc = sinFunc(45.0,i), newsine = sin(45.0 * .pi / 180), error = abs(newsinFunc - newsine) / abs(newsine)
+	print(" \(i)  ||  \(newsinFunc) || \(newsine) ||  \(error)")
+}
