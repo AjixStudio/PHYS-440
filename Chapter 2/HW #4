@@ -1,0 +1,42 @@
+import Glibc
+import Foundation
+
+
+let xmax = 40.0, xmin = 0.25, step = 0.1, order = 10, start = 50
+
+//Down Recursion
+func down(_ x: Double, _ n: Int, _ m: Int) -> Double {
+	var scale = Double()
+	var j = Array(repeating: 0.0, count: start+2)
+	
+	j[m+1] = 1.0 //Start with a value, will cause error
+	j[m] = 1.0
+	
+	for k in stride(from: m, through: 1, by: -1) { //Loop from highest to lowest
+		j[k-1] = (Double(2*k+1)/x)*j[k]-j[k+1] //Recurrence relation
+	}
+	scale = (sin(x)/x)/j[0] //Scale the result
+	
+	return j[n]*scale
+}
+
+//Up Recursion
+func up(_ x: Double, _ n: Int) -> Double {
+	var one = sin(x)/x, two = (sin(x)-x*cos(x))/(x*x), three = Double() //Start with lowest order
+	
+	for k in stride(from: 1, through: n, by: +1) { //Loop for order of function
+		three = (Double(2*k+1)/x)*two - one //Recurrence relation
+		one = two
+		two = three
+	}
+	
+	return three
+}
+
+//Main Data
+for x in stride(from: xmin, through: xmax, by: +step) {
+	let upValue = up(x,order), downValue = down(x,order,start)
+	let relativeDifference = abs(upValue - downValue)/(abs(upValue)+abs(downValue))
+	print(" \(x)  ||  \(downValue)  ||  \(upValue)  ||  \(relativeDifference)")
+}
+
