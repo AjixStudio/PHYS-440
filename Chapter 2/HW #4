@@ -33,10 +33,13 @@ func up(_ x: Double, _ n: Int) -> Double {
 	return three
 }
 
+print("Number of N | Down Value | Up Value | relativeError | logN")
+        
 //Main Data
 for x in stride(from: xmin, through: xmax, by: +step) {
 	let upValue = up(x,order), downValue = down(x,order,start)
 	let relativeDifference = abs(upValue - downValue)/(abs(upValue)+abs(downValue))
+
 	print(" \(x)  ||  \(downValue)  ||  \(upValue)  ||  \(relativeDifference)")
 }
 
