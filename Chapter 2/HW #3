@@ -6,13 +6,13 @@ let N = 1000
 
 var SUp = Float(), SDown = Float()
 
-	for n in stride(from: N, through: 1, by: -1) {
-		SUp += pow(Float(n),-1)
-	}
+for n in stride(from: N, through: 1, by: -1) {
+	SUp += pow(Float(n),-1)
+}
 
-	for n in 1...N {
-		SDown += pow(Float(n),-1)
-	}
+for n in 1...N {
+	SDown += pow(Float(n),-1)
+}
 
 print(SUp)
 print(SDown)
