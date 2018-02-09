@@ -2,29 +2,29 @@ import Glibc
 import Foundation
 
 
-let N = 1000
+let N = 1000000
+        
+print("Number of N | S-Up | S-Down | relativeError | logN")
 
-var SUp = Float(), SDown = Float()
+for x in 1...N {
+	var SUp = Double(), SDown = Double()
 
-for n in stride(from: N, through: 1, by: -1) {
-	SUp += pow(Float(n),-1)
+	for n in stride(from: x, through: 1, by: -1) {
+		SUp += pow(Double(n),-1)
+	}
+
+	for n in 1...x {
+		SDown += pow(Double(n),-1)
+	}
+
+	let relativeError = logC((SUp-SDown)/(abs(SUp)+abs(SDown)))
+	let logN = logC(Double(N))
+
+	print("\(x) | \(SUp) | \(SDown) | \(relativeError) | \(logN)")
 }
-
-for n in 1...N {
-	SDown += pow(Float(n),-1)
-}
-
-print(SUp)
-print(SDown)
 
 func logC(val: Float) --> Float {
 	return log(val)/log(10)
 }
-
-var relativeError = logC((SUp-SDown)/(abs(SUp)+abs(SDown)))
-var logN = logC(N)
-
-print("Relative Error: " + String(relativeError))
-print("log of N: " + String(logN))
 
 //plot(relativeError,logN)
