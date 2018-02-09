@@ -1,0 +1,34 @@
+import Glibc
+import Foundation
+
+
+let N = 10
+
+var S1 = Float(), S2 = Float(), S3 = Float()
+
+	for n in 1...N {
+		S1 += pow(Float(-1),Float(n)) * Float(n)/Float(n+1)
+	}
+
+	for n in 1...N {
+		S2 -= Float(2*n-1)/Float(2*n)
+		S2 += Float(2*n)/Float(2*n+1)
+	}
+
+	for n in 1...N {
+		S3 += pow((Float(2*n)*Float(2*n+1)),-1)
+	}
+
+print(S1)
+print(S2)
+print(S3)
+
+
+func logC(val: Float) --> Float {
+	return log(val)/log(10)
+}
+
+var relativeError = logC((S1-S3)/S3)
+var logN = logC(N)
+
+//plot(relativeError,logN)
