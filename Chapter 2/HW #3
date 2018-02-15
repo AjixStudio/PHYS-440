@@ -2,11 +2,14 @@ import Glibc
 import Foundation
 
 
-let N = 1000000
-        
-print("Number of N | S-Up | S-Down | relativeError | logN")
+let N = 100
 
-for x in 1...N {
+func logC(_ val: Double) -> Double {
+	return log(val)/log(10)
+}
+
+for x in 1...N{
+	
 	var SUp = Double(), SDown = Double()
 
 	for n in stride(from: x, through: 1, by: -1) {
@@ -17,14 +20,7 @@ for x in 1...N {
 		SDown += pow(Double(n),-1)
 	}
 
-	let relativeError = logC((SUp-SDown)/(abs(SUp)+abs(SDown)))
-	let logN = logC(Double(N))
+	let relativeError = abs(SUp-SDown)/(abs(SUp)+abs(SDown))
 
-	print("\(x) | \(SUp) | \(SDown) | \(relativeError) | \(logN)")
+	print("\(SUp),\(SDown),\(logC(relativeError)),\(logC(Double(x)))")
 }
-
-func logC(val: Float) --> Float {
-	return log(val)/log(10)
-}
-
-//plot(relativeError,logN)
