@@ -1,7 +1,7 @@
 import Glibc
 import Foundation
 
-print("Number of N | S1 | S2 | S3 | relativeError | logN")
+print("Number of N,S1,S2,S3,relativeError,logN")
 
 for NumberOfN in 1...1000000 {
 	var S1 = Double(), S2 = Double(), S3 = Double()
@@ -14,16 +14,14 @@ for NumberOfN in 1...1000000 {
 		let x = Double(n)
 		S2 += (-1.0)*(2.0*x-1.0)/(2.0*x)
 		S2 += (2.0*x)/(2*x+1.0)
-	}
-	for n in 1...NumberOfN {
-		let x = Double(n)
+
 		S3 += 1.0/(2.0*x*(2.0*x+1.0))
 	}
 
 	let relativeError = logC((S1-S3)/S3)
 	let logN = logC(Double(NumberOfN))
 
-	print("\(NumberOfN) | \(S1) | \(S2) | \(S3) | \(relativeError) | \(logN)")
+	print("\(NumberOfN),\(S1),\(S2),\(S3),\(relativeError),\(logN)")
 }
 
 func logC(_ val: Double) -> Double {
