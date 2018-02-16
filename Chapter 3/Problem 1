@@ -1,0 +1,36 @@
+import Foundation
+
+func function(_ x: Double) -> Double {
+	return exp(-x)
+}
+
+let max = 3 as Double,min = 0 as Double // Integration domain
+
+print(function(max))
+
+func MonteCarloIntegration(_ sampleSize:Int) -> Double {
+    var value = 0 as Double
+    var funcValue = 0 as Double
+	var sumOfFuncValues = 0 as Double
+	var area = 0 as Double 
+ 
+    for _ in 0..<sampleSize {
+        value = min + (max-min) * (Double(random()) / Double(RAND_MAX)) //RAND_MAX
+		
+		funcValue = function(value)
+		sumOfFuncValues += function(value)
+		
+		area += funcValue * (max-min) / Double(sampleSize)
+    }
+	
+	print("\(value),\(sumOfFuncValues),\(function(value))")
+    return area
+}
+ 
+print(MonteCarloIntegration(100))
+print(MonteCarloIntegration(1000))
+// print(MonteCarloIntegration(10000))
+// print(MonteCarloIntegration(100000))
+// print(MonteCarloIntegration(1000000))
+print(MonteCarloIntegration(10000000))
+// print(MonteCarloIntegration(100000000))
