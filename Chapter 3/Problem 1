@@ -1,15 +1,15 @@
 import Foundation
 
 func function(_ x: Double) -> Double {
-	return exp(-x)
+	return -exp(-x)
 }
 
 let max = 1 as Double, min = 0 as Double // Integration domain
 
-let trueAnswer = -exp(-max)+exp(-min)
+let trueAnswer = exp(-max)-exp(-min)
 print("True Answer: \(trueAnswer)")
 
-func MonteCarloIntegration(_ sampleSize:Int) { // -> Double
+func MonteCarloIntegration(_ sampleSize:Int) -> Double {
     var value = 0 as Double
 	var sumOfFuncValues = 0 as Double
  
@@ -21,9 +21,9 @@ func MonteCarloIntegration(_ sampleSize:Int) { // -> Double
 	
 	let area = sumOfFuncValues * (max-min) / Double(sampleSize)
 	
-	print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
+	print("\(sampleSize),\(area),\(abs((area - trueAnswer) / trueAnswer) * 100)")
 	
-//     return area
+    return area
 }
 
 MonteCarloIntegration(10)
