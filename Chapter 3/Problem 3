@@ -1,5 +1,6 @@
-import Glibc
+// import Glibc
 import Foundation
+
 
 let aNOT = 5.291772106712*pow(10,-11) // Bohr's Radius h-bar^2/(mass*(electron charge)^2)
 
@@ -20,3 +21,35 @@ func analyticalIntegral(_ Radius: Double) -> Double {
 
 // Must equal 1
 print(analyticalIntegral(pow(10,-10)))
+
+let max = 1 as Double, min = 0 as Double // Integration domain
+
+// let trueAnswer = exp(-max)-exp(-min)
+// print("True Answer: \(trueAnswer)")
+
+func MonteCarloIntegration(_ sampleSize: Int) -> Double {
+    var value = 0 as Double
+	var sumOfFuncValues = 0 as Double
+ 
+    for _ in 0..<sampleSize {
+        value = min + (max-min) * (Double(random()) / Double(RAND_MAX))
+		
+		sumOfFuncValues += analyticalIntegral(value*pow(10,-9))
+    }
+	
+	let area = sumOfFuncValues * (max-min) / Double(sampleSize)
+	
+	print("\(sampleSize),\(area)") //,\(abs(area - trueAnswer) / trueAnswer * 100)
+	
+    return area
+}
+
+MonteCarloIntegration(10)
+MonteCarloIntegration(20)
+MonteCarloIntegration(50)
+MonteCarloIntegration(100)
+MonteCarloIntegration(200)
+MonteCarloIntegration(500)
+MonteCarloIntegration(10000)
+MonteCarloIntegration(20000)
+MonteCarloIntegration(50000)
