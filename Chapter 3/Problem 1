@@ -10,20 +10,20 @@ let trueAnswer = exp(-max)-exp(-min)
 print("True Answer: \(trueAnswer)")
 
 func MonteCarloIntegration(_ sampleSize:Int) -> Double {
-    var value = 0 as Double
-	var sumOfFuncValues = 0 as Double
- 
-    for _ in 0..<sampleSize {
-        value = min + (max-min) * (Double(random()) / Double(RAND_MAX)) // Generate "random" number by adding the min to the product between the difference of b & a and ξ, which is the uniformly distributed between zero and one. [X = min + ξ(max-min)]
-		
-		sumOfFuncValues += function(value) // sum up the results from the function with the generated value
-    }
-	
-	let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
-	
-	print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
-	
-    return area
+        var value = 0 as Double
+        var sumOfFuncValues = 0 as Double
+        
+        for _ in 0..<sampleSize {
+            value = min + (max-min) * Double(arc4random()) / Double(UINT32_MAX) // Generate "random" number by adding the min to the product between the difference of b & a and ξ, which is the uniformly distributed between zero and one. [X = min + ξ(max-min)]
+            
+            sumOfFuncValues += function(value) // sum up the results from the function with the generated value
+        }
+        
+        let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
+        
+        print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
+        
+        return area
 }
 
 MonteCarloIntegration(10)
