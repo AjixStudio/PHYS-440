@@ -17,25 +17,25 @@ func analyticalIntegral(_ Radius: Double) -> Double {
 }
 
 func MonteCarloIntegration(_ sampleSize:Int) -> Double {
-    var value = 0 as Double
+	var value = 0 as Double
 	var sumOfFuncValues = 0 as Double
- 
-    for _ in 0..<sampleSize {
-        // Generate "random" number by adding the min to the product between the difference of b & a and ξ, which is the uniformly distributed between zero and one. [X = min + ξ(max-min)]
-		value = min + (max-min) * (Double(random()) / Double(RAND_MAX))
-		
+
+	for _ in 0..<sampleSize {
+		// Generate "random" number by adding the min to the product between the difference of b & a and ξ, which is the uniformly distributed between zero and one. [X = min + ξ(max-min)]
+		value = min + (max-min) * Double(arc4random()) / Double(UINT32_MAX)
+
 		// Sum up the results from the function with the generated value
 		// Change "analyticalIntegral" to your function
 		// "-9" is the average distance between atoms (nm)
 		// However, with "-12", the error is very small compared to "-9"...
-		sumOfFuncValues += analyticalIntegral(value * pow(10,-9)) 
-    }
-	
+		sumOfFuncValues += analyticalIntegral(value * pow(10,-9))
+	}
+
 	let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
-	
+
 	print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
-	
-    return area
+
+	return area
 }
 
 MonteCarloIntegration(10)
