@@ -8,12 +8,27 @@ let max = 1 as Double, min = 0 as Double // Integration domain
 let trueAnswer = 1 as Double
 print("True Answer: \(trueAnswer)")
 
-func analyticalIntegral(_ Radius: Double) -> Double {
-	
-	let exponential = exp(-1.0*Radius/aNOT)
-	
-	// The integrated function for H2+ is (1+R/a0+1/3(R/a0)^3)*e^(-1R/a0)
-	return (1.0 + Radius/aNOT + 1.0/3.0*pow(Radius/aNOT,3))*exponential
+//    func analyticalIntegral(_ Radius: Double) -> Double {
+//
+//        let exponential = exp(-1.0*Radius/aNOT)
+//
+//        // The analytical form for the wave function for H2+ 1s orbital is (1+R/a0+1/3(R/a0)^3)*e^(-1R/a0)
+//        return (1.0 + Radius/aNOT + 1.0/3.0*pow(Radius/aNOT,3))*exponential
+//    }
+    
+func waveFunction(_ Radius: Double) -> Double {
+
+	let exponential1s = exp(-1.0*Radius/aNOT)
+	let exponential2px = exp(-1.0*Radius/aNOT/2.0)
+
+	// Wavefunction for the 1s Orbital
+	let waveFunc1sOrbital = pow(Double.pi,-1/2)*pow(aNOT,-3/2)*exponential1s
+
+	// Wavefunction for the 2px Orbital
+	let waveFunc2pxOrbital = pow(32*Double.pi,-1/2)*pow(aNOT,-3/2)*Radius/aNOT*exponential2px
+
+	// Overlap integral for 2 1s orbitals is 2 wavefunctions squared
+	return waveFunc1sOrbital*waveFunc2pxOrbital
 }
 
 func MonteCarloIntegration(_ sampleSize:Int) -> Double {
@@ -26,9 +41,9 @@ func MonteCarloIntegration(_ sampleSize:Int) -> Double {
 
 		// Sum up the results from the function with the generated value
 		// Change "analyticalIntegral" to your function
-		// "-9" is the average distance between atoms (nm)
-		// However, with "-12", the error is very small compared to "-9"...
-		sumOfFuncValues += analyticalIntegral(value * pow(10,-9))
+		// "-10" is recommended by Prof. Terry
+		// However, with "-12", the error is very small compared to "-10"...
+		sumOfFuncValues += waveFunction(value * pow(10,-10))
 	}
 
 	let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
