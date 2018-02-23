@@ -1,0 +1,62 @@
+import Foundation
+
+let aNOT = 5.291772106712*pow(10,-11) // Bohr's Radius h-bar^2/(mass*(electron charge)^2)
+let max = 1 as Double, min = 0 as Double // Integration domain
+
+// What is the true answer??
+// Must equal 1
+let trueAnswer = 1 as Double
+print("True Answer: \(trueAnswer)")
+
+func analyticalIntegral(_ Radius: Double) -> Double {
+
+        let exponential = exp(-1.0*Radius/aNOT)
+
+        // The analytical form for the wave function for H2+ 1s orbital is (1+R/a0+1/3(R/a0)^3)*e^(-1R/a0)
+        return (1.0 + Radius/aNOT + 1.0/3.0*pow(Radius/aNOT,3))*exponential
+}
+
+func waveFunction(_ Radius: Double) -> Double {
+
+        let exponential = exp(-1.0*Radius/aNOT)
+
+        // Wavefunction for the 1s Orbital
+        let waveFunc1sOrbital = pow(Double.pi,-1/2)*pow(aNOT,-3/2)*exponential
+
+        // Overlap integral for 2 1s orbitals is 2 wavefunctions squared
+        return pow(waveFunc1sOrbital,2.0)
+}
+
+func MonteCarloIntegration(_ sampleSize:Int) -> Double {
+        var value = 0 as Double
+        var sumOfFuncValues = 0 as Double
+        var sumOfAnalyticalValues = 0 as Double
+
+        for _ in 0..<sampleSize {
+                // Generate "random" number by adding the min to the product between the difference of b & a and ξ, which is the uniformly distributed between zero and one. [X = min + ξ(max-min)]
+                value = min + (max-min) * Double(arc4random()) / Double(UINT32_MAX)
+
+                // Sum up the results from the function with the generated value
+                // Change "analyticalIntegral" to your function
+                // "-10" is recommended by Prof. Terry
+                // However, with "-12", the error is very small compared to "-10"...
+                sumOfFuncValues += waveFunction(value * pow(10,-10))
+                sumOfAnalyticalValues += analyticalIntegral(value * pow(10,-10))
+        }
+
+        let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
+
+        print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
+
+        return area
+}
+
+MonteCarloIntegration(10)
+MonteCarloIntegration(20)
+MonteCarloIntegration(50)
+MonteCarloIntegration(100)
+MonteCarloIntegration(200)
+MonteCarloIntegration(500)
+MonteCarloIntegration(10000)
+MonteCarloIntegration(20000)
+MonteCarloIntegration(50000)
