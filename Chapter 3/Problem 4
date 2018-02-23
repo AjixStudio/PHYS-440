@@ -25,7 +25,7 @@ func waveFunction(_ Radius: Double) -> Double {
 	let waveFunc1sOrbital = pow(Double.pi,-1/2)*pow(aNOT,-3/2)*exponential1s
 
 	// Wavefunction for the 2px Orbital
-	let waveFunc2pxOrbital = pow(32*Double.pi,-1/2)*pow(aNOT,-3/2)*Radius/aNOT*exponential2px
+        let waveFunc2pxOrbital = 4.0*pow(32*Double.pi,-1/2)*pow(aNOT,-3/2)*Radius/aNOT*exponential2px
 
 	// Overlap integral for 2 1s orbitals is 2 wavefunctions squared
 	return waveFunc1sOrbital*waveFunc2pxOrbital
