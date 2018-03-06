@@ -1,0 +1,57 @@
+import Foundation
+
+func RK4step(y: [Double], f: ([Double], Double) -> [Double], t: Double, h: Double) -> [Double] {
+
+    let length = y.count
+
+    var w = [Double](repeating: 0.0, count: length )
+    var result = [Double](repeating: 0.0, count: length)
+
+    let k1 = f(y,t)
+    assert(k1.count == y.count, "States and Derivatives must be the same length")
+    for i in 0..<length { w[i] = y[i] + 0.5*h*k1[i]  }
+    let k2 = f(w, t+0.5*h)
+    for i in 0..<length { w[i] = y[i] + 0.5*h*k2[i]  }
+    let k3 = f(w,t+0.5*h)
+    for i in 0..<length { w[i] = y[i] + h*k3[i] }
+    let k4 = f(w,t+h)
+
+    for i in 0..<length {
+        result[i] = y[i] + (k1[i] + 2.0*k2[i] + 2.0*k3[i] + k4[i])*h/6.0
+    }
+
+    return result;
+}
+
+func test_exp(){
+    // Integrate: y' = y
+    // y_0 = 1.0
+    // from 0 to 2.0
+
+    var y = [1.0]
+
+    func deriv (y: [Double], t: Double) -> [Double] {
+        return [ y[0] ]
+    }
+
+    var t = 0 as Double
+    let h = 0.01
+
+
+    while t < 2.0 {
+        y = RK4step(y:y, f:deriv, t:t, h:h)
+        t += h
+        print("t: \(t), y: \(y[0]) exact: \(exp(t))\n")
+    }
+
+    let exact = exp(2.0)
+    let error = abs(y[0] - exact)
+
+    assert(error < pow(h, 4.0))
+    print("y: \(y[0]) exact: \(exact) error: \(error)\n")
+
+}
+
+print("testing...\n")
+
+test_exp()
