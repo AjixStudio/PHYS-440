@@ -26,7 +26,7 @@ func waveFunction(_ Radius: Double) -> Double {
         // Overlap integral for 2 1s orbitals is 2 wavefunctions squared
         return pow(waveFunc1sOrbital,2.0)
 }
-
+    
 func MonteCarloIntegration(_ sampleSize:Int) -> Double {
         var value = 0 as Double
         var sumOfFuncValues = 0 as Double
@@ -44,13 +44,13 @@ func MonteCarloIntegration(_ sampleSize:Int) -> Double {
                 sumOfAnalyticalValues += analyticalIntegral(value * pow(10,-10))
         }
 
-        let area = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
+        let areaWave = sumOfFuncValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
+        let areaAnalytical = sumOfAnalyticalValues * (max-min) / Double(sampleSize) // Calculate the area under all the points from the function.
 
-        print("\(sampleSize),\(area),\(abs(area - trueAnswer) / trueAnswer * 100)")
+        print("\(sampleSize),\(areaWave),\(abs(areaWave - areaAnalytical) / areaAnalytical * 100)")
 
-        return area
+        return areaWave
 }
-
 MonteCarloIntegration(10)
 MonteCarloIntegration(20)
 MonteCarloIntegration(50)
